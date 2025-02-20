@@ -1,37 +1,50 @@
-const sendGetRequest = require("./sendGetRequest");
-const sendPostRequest = require("./sendPostRequest");
-const sendImagePostRequest = require("./sendImagePostRequest");
+const sendGetRequest = require("./GetRequest");
+const saveGet = require("../output/saveGet");
+const sendPostRequest = require("./PostRequest");
+const sendImagePostRequest = require("./FormPostRequest");
 
-async function handleRequests(
-  RequstType,
-  URL,
-  imagePath,
-  token,
-  jsonData,
-  contentType
-) {
-  try {
-    switch (RequstType) {
-      case "GET":
-        const getData = await sendGetRequest(URL);
-        console.log("GET Response Data:", getData);
-        return { getData };
-      case "POST":
-        const postData = await sendPostRequest(URL, jsonData, token);
-        console.log("POST Response Data:", postData);
-        return { postData };
-      case "IMAGE_POST":
-        const imagePostData = await sendImagePostRequest(URL, imagePath, token);
-        console.log("Image POST Response Data:", imagePostData);
-        return { imagePostData };
-      default:
-        console.error("Invalid Request Type");
-        return null;
+const express = require("express");
+const router = express.Router();
+const fs = require("fs");
+const path = require("path");
+
+// defin the get requests
+router.get("/", (req, res) => {
+  fs.readFile(path.join(__dirname, "../view/index.html"), (err, data) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Error loading form");
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
     }
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-}
+  });
+});
 
-module.exports = handleRequests;
+// defin the post request to handle all the
+router.post("/get", async (req, res) => {
+  const apiURL = req.body.API;
+  const name = req.body.NAME;
+  const des = req.body.DES;
+  console.log(apiURL);
+  console.log(name);
+  console.log(des);
+  try {
+    console.log("getting the data from the api");
+    const data = await sendGetRequest(apiURL);
+    console.log("saving the data to the file ");
+    const textResponse = JSON.stringify(data, null, 2);
+    console.log("Converted JSON response to text: ", textResponse);
+    const savedData = await saveGet(apiURL, name, des, textResponse);
+    res.send(
+      `Data from ${apiURL}: ${JSON.stringify(
+        data
+      )} and the saved data are : ${savedData}`
+    );
+  } catch (error) {
+    res.status(500).send("Error fetching data");
+  }
+});
+
+// Export the router
+module.exports = router;

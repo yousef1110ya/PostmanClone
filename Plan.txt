@@ -37,8 +37,10 @@ the coding aspect :
         Handler.js (this will be mainly the router in the application)
     
     output/
-        writeResponse.js 
-        writeSession.js 
+        saveGet.js
+        savePost.js
+        saveIPost.js
+         
 
 ===========================================================================================================================
 some text diagram : 
