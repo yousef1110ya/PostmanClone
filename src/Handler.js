@@ -13,7 +13,7 @@ async function handleRequests(
   try {
     switch (RequstType) {
       case "GET":
-        const getData = await sendGetRequest(URL, contentType, token);
+        const getData = await sendGetRequest(URL);
         console.log("GET Response Data:", getData);
         return { getData };
       case "POST":

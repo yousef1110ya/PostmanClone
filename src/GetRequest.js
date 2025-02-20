@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-async function sendGetRequest(targetUrl, contentType, token) {
+async function sendGetRequest(targetUrl) {
   try {
     const response = await axios.get(targetUrl, {
       headers: {

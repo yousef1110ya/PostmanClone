@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>send a request</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- first lets set all the data and then we edit the stuff  -->
+    <div class="openData">
+        <form id="uploadForm">
+            <div class="type-url_container">
+                <label>Choose Request Type:</label>
+                <label><input type="radio" name="requestType" value="GET" required> GET</label>
+                <label><input type="radio" name="requestType" value="POST" required> POST</label>
+
+                <label for="urlPath">URL Path:</label>
+                <input type="text" id="urlPath" name="urlPath" placeholder="Enter URL Path" required>
+
+            </div>
+
+            <label>Choose body Type:</label>
+            <label><input type="radio" name="dataType" value="null" required> null</label>
+            <label><input type="radio" name="dataType" value="json" required> JSON Data</label>
+            <label><input type="radio" name="dataType" value="form" required> Form Data</label>
+            
+            <div id="jsonDataDiv" style="display: none;">
+                <label for="jsonData">JSON Data:</label>
+                <textarea id="jsonData" name="jsonData" placeholder="Enter JSON data"></textarea>
+            </div>
+            
+            <div id="formDataDiv" style="display: none;">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+
+    <script src="scripts.js"></script>
+    
+</body>
+</html>

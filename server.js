@@ -1,6 +1,7 @@
-const http = require("http");
 const fs = require("fs");
+const express = require("express");
 const path = require("path");
+const sendGetRequest = require("./src/GetRequest");
 const querystring = require("querystring");
 const formidable = require("formidable");
 
@@ -8,52 +9,58 @@ const formidable = require("formidable");
 const port = 3000;
 
 // Create the server
-const server = http.createServer((req, res) => {
-  if (req.method === "GET" && req.url === "/") {
-    // Serve the HTML form
-    fs.readFile(path.join(__dirname, "index.html"), (err, data) => {
-      if (err) {
-        res.writeHead(500, { "Content-Type": "text/plain" });
-        res.end("Error loading form");
-      } else {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(data);
-      }
-    });
-  } else if (req.method === "POST" && req.url === "/submit") {
-    // Handle form submission
-    const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        res.writeHead(500, { "Content-Type": "text/plain" });
-        res.end("Error processing form");
-        return;
-      }
+const app = express();
 
-      const { url, token, jsonData, contentType, requestType } = fields;
-      const imagePath = files.imagePath ? files.imagePath.path : null;
+// Define a route for the root URL
+app.get("/", (req, res) => {
+  // Serve the HTML form
+  fs.readFile(path.join(__dirname, "/view/index.html"), (err, data) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Error loading form");
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
+    }
+  });
+});
 
-      const responseData = {
-        type: requestType,
-        api: url,
-        sentData: jsonData,
-        image: imagePath,
-        token: token,
-        response: "Response from the server goes here",
-      };
+app.get("/GET", (req, res) => {
+  // Serve the HTML form
+  fs.readFile(path.join(__dirname, "/view/get/index.html"), (err, data) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Error loading form");
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
+    }
+  });
+});
 
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(responseData));
+async function publicGET(url) {
+  // sending a get request with the wanted data
+  const getData = await sendGetRequest(url);
+  console.log("GET Response Data:", getData);
+  return getData;
+}
 
-      console.log("Form data received:", responseData);
-    });
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
+app.post("/GET", (req, res) => {
+  const form = new formidable.IncomingForm();
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Error parsing form");
+    } else {
+      const url = fields.url;
+      const fake = await publicGET(url);
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end(fake);
+    }
+  });
 });
 
 // Start the server
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });

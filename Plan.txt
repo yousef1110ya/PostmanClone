@@ -1,0 +1,87 @@
+this project can be devided to 3 main services : 
+1- the browser (user interface)
+2- the request client 
+3- the json files creator 
+
+to explain the main perpose of each one of them : 
+1- the user interface : 
+    first : the user will get a simple web page so that he can send the data he wants  
+        and this data is :
+            request-type , 
+            end point url (URL),
+            Header files 
+            Body (this one can go for a json-text or form-data)
+            auth (sending the token "sometimes not always")
+
+2- the request sending service :
+    in the src folder there are a few exported methodes , these methodes will be sending the requests to the local server 
+
+3- the json files creator : 
+    this service will be the main reason i've created this application .
+    this service will take all the end points with the responses and save them all to the same file 
+
+
+===========================================================================================================================
+the coding aspect : 
+
+1- the html page : 
+    view /
+        index.html
+        style.css 
+        script.js 
+
+    src / 
+        getrequest.js 
+        postRequest.js
+        formpostrequest.js 
+        Handler.js (this will be mainly the router in the application)
+    
+    output/
+        writeResponse.js 
+        writeSession.js 
+
+===========================================================================================================================
+some text diagram : 
+
+in the get request 
+_____________________________________________________
+|GET|            the wanted url                     |
+|___|_______________________________________________|
+data type : * form-data     *json 
+           ___________________
+           |add to collection|
+           |_________________|
+
+response
+_____________________________________________________
+|                                                    |
+|                                                    |
+|                                                    |
+|                                                    |
+|____________________________________________________|
+
+******************************************************
+
+the post request 
+_____________________________________________________
+|POST|            the wanted url                     |
+|____|_______________________________________________|
+data type : * form-data     *json 
+_____________________________________________________
+|                                                    |
+|                                                    |
+|                                                    |
+|                                                    |
+|____________________________________________________|
+           ___________________
+           |add to collection|
+           |_________________|
+
+
+response
+_____________________________________________________
+|                                                    |
+|                                                    |
+|                                                    |
+|                                                    |
+|____________________________________________________|
