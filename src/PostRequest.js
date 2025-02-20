@@ -1,11 +1,10 @@
 const axios = require("axios");
 
-async function sendPostRequest(targetUrl, jsonData, token) {
+async function sendPostRequest(targetUrl, jsonData) {
   try {
     const response = await axios.post(targetUrl, jsonData, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;

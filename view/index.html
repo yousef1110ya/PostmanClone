@@ -21,6 +21,21 @@
      </form>
      </div>
 
+    <div class="POST">
+        <h1>sending POST request:</h1>
+        <form action="/post" method="POST">
+            <label for="API">API:</label>
+            <input type="text" id="API" name="API" required>
+            <label for="NAME">end point name:</label>
+            <input type="text" id="NAME" name="NAME" required>
+            <label for="DES">describe the end point:</label>
+            <input type="text" id="DES" name="DES" required>
+            <label for="JSON">JSON:</label>
+            <textarea id="JSON" name="JSON" required></textarea>
+            <button type="submit">Send Request</button>
+        </form>
+    </div>
+
 
     <script src="scripts.js"></script>
     
